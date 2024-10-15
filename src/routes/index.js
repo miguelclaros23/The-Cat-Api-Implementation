@@ -37,7 +37,7 @@ router.post('/login', async (req, res) => {
 
 router.get('/breeds', async (req, res) => {
     
-     axios.get('https://api.thecatapi.com/v1/breeds?limit=10&page=0')
+     axios.get('https://api.thecatapi.com/v1/breeds?limit=100&page=0')
     .then((response) => {res.json(response.data); 
     })
     .catch((error) => {
@@ -49,8 +49,9 @@ router.get('/breeds', async (req, res) => {
 
 router.get('/breeds/:breed_id', async (req, res) => {
    
-    const params = {breed_ids: req.params.breed_id};
-    await axios.get('https://api.thecatapi.com/v1/breeds/',params)
+   // const params = {breed_ids: req.params.breed_id};
+ 
+    await axios.get('https://api.thecatapi.com/v1/breeds/'+req.params.breed_id)
         .then((response) => {res.json(response.data); })
         .catch((error) => {
             console.error('Error al obtener usuarios:', error);
@@ -68,15 +69,11 @@ router.get('/breeds/search', async (req, res) => {
         });
 });
 
-router.get('/imagesbybreedid', async (req, res) => {
-   
-    const params = {breed_ids: req.body.breed_ids};
-    //console.log(req.body.breed_ids);
-    await axios.get('https://api.thecatapi.com/v1/images/search',params)
+router.get('/imagesbybreedid/:breed_id', async (req, res) => {
+    let id = req.params.breed_id;
+    await axios.get('https://api.thecatapi.com/v1/images/search?breed_ids='+id+'&limit=2')
         .then((response) => {res.json(response.data); })
-        .catch((error) => {
-            console.error('Error al obtener usuarios:', error);
-        });
+        .catch((error) => {console.error('Error al obtener usuarios:', error);});
 });
 
 async function verifyToken(req, res, next) {
