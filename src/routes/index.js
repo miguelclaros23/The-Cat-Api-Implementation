@@ -41,7 +41,7 @@ router.get('/breeds', async (req, res) => {
     .then((response) => {res.json(response.data); 
     })
     .catch((error) => {
-        console.error('Error al obtener usuarios:', error);
+        console.error('Error al obtener las razas por filtro:', error);
     }); 
 
   
@@ -54,7 +54,7 @@ router.get('/breeds/:breed_id', async (req, res) => {
     await axios.get('https://api.thecatapi.com/v1/breeds/'+req.params.breed_id)
         .then((response) => {res.json(response.data); })
         .catch((error) => {
-            console.error('Error al obtener usuarios:', error);
+            console.error('Error al obtener razas:', error);
         });
 });
 
@@ -65,7 +65,7 @@ router.get('/breeds/search', async (req, res) => {
     await axios.get('https://api.thecatapi.com/v1/images/search',params)
         .then((response) => {res.json(response.data); })
         .catch((error) => {
-            console.error('Error al obtener usuarios:', error);
+            console.error('Error al filtrar imagenes:', error);
         });
 });
 
@@ -73,7 +73,7 @@ router.get('/imagesbybreedid/:breed_id', async (req, res) => {
     let id = req.params.breed_id;
     await axios.get('https://api.thecatapi.com/v1/images/search?breed_ids='+id+'&limit=2')
         .then((response) => {res.json(response.data); })
-        .catch((error) => {console.error('Error al obtener usuarios:', error);});
+        .catch((error) => {console.error('Error al obtener la busqueda:', error);});
 });
 
 async function verifyToken(req, res, next) {
@@ -97,5 +97,14 @@ async function verifyToken(req, res, next) {
         return res.status(401).send('Unauhtorized Request');
     }
 }
+
+router.get('/breeds/search-images', async (req, res) => {
+ 
+    await axios.get('https://api.thecatapi.com/v1/images/search')
+        .then((response) => {res.json(response.data); })
+        .catch((error) => {
+            console.error('Error al obtener imagenes:', error);
+        });
+});
 
 module.exports = router;
